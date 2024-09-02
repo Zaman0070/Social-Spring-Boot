@@ -11,6 +11,7 @@ import com.social_app.social.payloads.CategoryDto;
 import com.social_app.social.repository.CategoryRepo;
 import com.social_app.social.services.CategoryService;
 
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
