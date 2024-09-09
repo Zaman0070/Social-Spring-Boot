@@ -18,6 +18,7 @@ public class FileServiceImp implements FileService {
     public String uploadFile(String path, MultipartFile file) throws IOException {
         String name = file.getOriginalFilename();
         String uuid = UUID.randomUUID().toString();
+        @SuppressWarnings("null")
         String filePath = uuid.concat(name.substring(name.lastIndexOf(".")));
         String fullPath = path + File.separator + filePath;
 
