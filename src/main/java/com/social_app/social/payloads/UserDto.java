@@ -1,5 +1,10 @@
 package com.social_app.social.payloads;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.social_app.social.models.RoleModel;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -24,4 +29,6 @@ public class UserDto {
     @Size(min = 6, max = 16)
     private String password;
     private String about;
+    private Set<RoleDto> roles = new HashSet<>();
+
 }

@@ -1,13 +1,19 @@
 package com.social_app.social.services.impl;
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.social_app.social.configs.AppConstant;
+import com.social_app.social.models.RoleModel;
 import com.social_app.social.models.UserModel;
 import com.social_app.social.payloads.UserDto;
+import com.social_app.social.repository.RoleRepo;
 import com.social_app.social.repository.UserRepo;
 import com.social_app.social.services.UserService;
 
@@ -18,6 +24,27 @@ public class UserServiceImpl implements UserService{
     private UserRepo userRepo;
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleRepo roleRepo;
+
+
+
+    @Override
+    public UserDto registerNewUser(UserDto user) {
+        UserModel newUser = dtoToUser(user);
+        newUser.setPassword(this.passwordEncoder.encode(newUser.getPassword()));
+        Optional<RoleModel> userRole =this.roleRepo.findById(AppConstant.USER_ROLE_ID);
+        if(userRole.isPresent()){
+            newUser.getRoles().add(userRole.get());
+        }
+        UserModel savedUser = userRepo.save(newUser);
+        return userToDto(savedUser);
+        
+    }
 
     @Override
     public UserDto createUser(UserDto user) {
@@ -76,6 +103,8 @@ public class UserServiceImpl implements UserService{
         UserDto userDto = modelMapper.map(user, UserDto.class);
         return userDto;
     }
+
+    
 
 
     
